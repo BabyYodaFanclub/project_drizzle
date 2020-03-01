@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: f074a6f5b24d1b94aac05cf67f22b38a
   m_SerializeEntries:
   - m_GUID: 252cc8a6b5dfd104aba549b07cc2c69b
-    m_Address: Chunk2
+    m_Address: Chunk0
     m_ReadOnly: 0
     m_SerializedLabels:
     - Scene

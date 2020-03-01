@@ -9,8 +9,6 @@ public class ChunkLoadingTrigger : MonoBehaviour
     public Collider EnterCollider;
     public Collider ExitCollider;
 
-    private bool _loaded;
-
     private void Awake()
     {
         foreach (var childRenderer in GetComponentsInChildren<Renderer>())
@@ -30,20 +28,12 @@ public class ChunkLoadingTrigger : MonoBehaviour
 
     private void OnLoadTrigger(Collider other)
     {
-        if (_loaded)
-            return;
-        
         Chunk.LoadScene();
-        _loaded = true;
     }
 
     private void OnUnloadTrigger(Collider other)
     {
-        if (!_loaded)
-            return;
-        
         Chunk.UnloadScene();
-        _loaded = false;
     }
 
     private static ColliderEventEmitter GetEventForCollider(Collider c)
