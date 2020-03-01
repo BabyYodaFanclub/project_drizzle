@@ -5,10 +5,15 @@ using UnityEngine.Serialization;
 
 public class ColliderEventEmitter : MonoBehaviour
 {
-    public UnityAction<Collider> OnTriggerEnterEvent;
-    
+    public event Action<Collider> OnTriggerEnterEvent;
+
+    private void Start()
+    {
+        GetComponent<Collider>().isTrigger = true;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        OnTriggerEnterEvent.Invoke(other);
+        OnTriggerEnterEvent?.Invoke(other);
     }
 }

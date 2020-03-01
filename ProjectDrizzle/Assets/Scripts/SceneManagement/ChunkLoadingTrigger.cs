@@ -1,42 +1,51 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public class ChunkLoadingTrigger : MonoBehaviour
 {
-    public Chunk Chunk;
-    public Collider EnterCollider;
-    public Collider ExitCollider;
-
+    public Collider[] EnterColliders;
+    public Collider[] ExitColliders;
+    public string ChunkName;
+    private Chunk _chunk;
+    
     private void Awake()
     {
         foreach (var childRenderer in GetComponentsInChildren<Renderer>())
         {
+            // TODO: enable this
             //Destroy(childRenderer);
         }
     }
 
     private void Start()
     {
-        Assert.IsNotNull(EnterCollider);
-        Assert.IsNotNull(ExitCollider);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(ChunkName));
         
-        GetEventForCollider(EnterCollider).OnTriggerEnterEvent += OnLoadTrigger;
-        GetEventForCollider(ExitCollider).OnTriggerEnterEvent += OnUnloadTrigger;
+        // TODO Write a chunk manager in the main scene
+        _chunk = FindObjectsOfType<Chunk>()
+                    .First(c => c.ChunkName.Equals(ChunkName, StringComparison.InvariantCultureIgnoreCase));
+
+        foreach (var col in EnterColliders)
+            GetEventEmitterForCollider(col).OnTriggerEnterEvent += OnLoadTrigger;
+
+        foreach (var col in ExitColliders)
+            GetEventEmitterForCollider(col).OnTriggerEnterEvent += OnUnloadTrigger;
     }
 
     private void OnLoadTrigger(Collider other)
     {
-        Chunk.LoadScene();
+        _chunk.Load();
     }
 
     private void OnUnloadTrigger(Collider other)
     {
-        Chunk.UnloadScene();
+        _chunk.Unload();
     }
 
-    private static ColliderEventEmitter GetEventForCollider(Collider c)
+    private static ColliderEventEmitter GetEventEmitterForCollider(Collider c)
     {
         var emitter = c.GetComponent<ColliderEventEmitter>();
         if (!emitter)
@@ -45,5 +54,14 @@ public class ChunkLoadingTrigger : MonoBehaviour
         }
 
         return emitter;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var col in EnterColliders)
+            GetEventEmitterForCollider(col).OnTriggerEnterEvent -= OnLoadTrigger;
+
+        foreach (var col in ExitColliders)
+            GetEventEmitterForCollider(col).OnTriggerEnterEvent -= OnUnloadTrigger;
     }
 }

@@ -5,14 +5,24 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
+/// <summary>
+/// Source: http://answers.unity.com/answers/1248399/view.html
+/// </summary>
 public static class PlayFromTheFirstScene
 {
     private const string PlayFromFirstMenuStr = "Edit/Always Start From Scene 0 &p";
+    private const string TeleportPlayerMenuStr = "Edit/Teleport Player to started Chunk &t";
 
     private static bool PlayFromFirstScene
     {
-        get { return EditorPrefs.HasKey(PlayFromFirstMenuStr) && EditorPrefs.GetBool(PlayFromFirstMenuStr); }
-        set { EditorPrefs.SetBool(PlayFromFirstMenuStr, value); }
+        get => EditorPrefs.HasKey(PlayFromFirstMenuStr) && EditorPrefs.GetBool(PlayFromFirstMenuStr);
+        set => EditorPrefs.SetBool(PlayFromFirstMenuStr, value);
+    }
+
+    private static bool TeleportPlayerToCorrectChunk
+    {
+        get => EditorPrefs.HasKey(TeleportPlayerMenuStr) && EditorPrefs.GetBool(TeleportPlayerMenuStr);
+        set => EditorPrefs.SetBool(TeleportPlayerMenuStr, value);
     }
 
     [MenuItem(PlayFromFirstMenuStr, false, 150)]
@@ -32,6 +42,23 @@ public static class PlayFromTheFirstScene
         return true;
     }
 
+    [MenuItem(TeleportPlayerMenuStr, false, 151)]
+    private static void TeleportPlayerCheckMenu()
+    {
+        TeleportPlayerToCorrectChunk = !TeleportPlayerToCorrectChunk;
+        Menu.SetChecked(TeleportPlayerMenuStr, TeleportPlayerToCorrectChunk);
+
+        ShowNotifyOrLog(TeleportPlayerToCorrectChunk ? "Teleport player to the started chunk" : "Do not teleport player");
+    }
+
+    // The menu won't be gray out, we use this validate method for update check state
+    [MenuItem(TeleportPlayerMenuStr, true)]
+    private static bool TeleportPlayerCheckMenuValidate()
+    {
+        Menu.SetChecked(TeleportPlayerMenuStr, TeleportPlayerToCorrectChunk);
+        return true;
+    }
+
     // This method is called before any Awake. It's the perfect callback for this feature
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void LoadFirstSceneAtGameBegins()
@@ -45,21 +72,26 @@ public static class PlayFromTheFirstScene
             return;
         }
 
-        var openSceneName = SceneManager.GetActiveScene().name;
+        var startedSceneName = SceneManager.GetActiveScene().name;
         
-        SceneManager.LoadSceneAsync(0).completed += obj => OnSceneLoaded(obj, openSceneName);
+        SceneManager.LoadSceneAsync(0).completed += obj => OnSceneLoaded(obj, startedSceneName);
         
     }
 
-    private static void OnSceneLoaded(AsyncOperation obj, string openSceneName)
+    private static void OnSceneLoaded(AsyncOperation obj, string startedSceneName)
     {
+        if (!TeleportPlayerToCorrectChunk || SceneManager.GetActiveScene().name.Equals(startedSceneName, StringComparison.InvariantCultureIgnoreCase))
+        {
+            return;
+        }
+        
         var chunks = Object.FindObjectsOfType<Chunk>().ToList();
         var targetChunk = chunks
-            .FirstOrDefault(s => s.ChunkName.Equals(openSceneName, StringComparison.InvariantCultureIgnoreCase));
+            .FirstOrDefault(s => s.ChunkName.Equals(startedSceneName, StringComparison.InvariantCultureIgnoreCase));
 
         if (targetChunk == null)
         {
-            Debug.LogWarning($"The started Scene {openSceneName} does not exist as a chunk in the main scene. Cannot place player in the correct chunk.");
+            Debug.LogWarning($"The started Scene {startedSceneName} does not exist as a chunk in the main scene. Cannot place player in the correct chunk.");
             return;
         }
         

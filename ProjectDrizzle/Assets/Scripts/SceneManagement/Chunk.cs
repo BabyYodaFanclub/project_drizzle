@@ -5,10 +5,11 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class Chunk : MonoBehaviour
 {
-    private const int ChunkSize = 50;
+    private const int ChunkEdgeLength = 50;
     private const string DebugObjectsPrefix = "Debug";
     
     public string ChunkName;
@@ -19,13 +20,18 @@ public class Chunk : MonoBehaviour
     {
         Debug.Assert(!string.IsNullOrWhiteSpace(ChunkName), nameof(ChunkName) + " is null or whitespace");
         
-        var player = GameObject.FindGameObjectWithTag("Player");
-        var playerDistance = transform.position - player.transform.position;
-        if (Math.Abs(playerDistance.x) < ChunkSize && Math.Abs(playerDistance.z) < ChunkSize)
-            LoadScene();
+        if (IsPlayerInChunk())
+            Load();
     }
 
-    public void LoadScene()
+    private bool IsPlayerInChunk()
+    {
+        var player = GameObject.FindGameObjectWithTag("Player");
+        var playerDistance = transform.position - player.transform.position;
+        return Math.Abs(playerDistance.x) < ChunkEdgeLength && Math.Abs(playerDistance.z) < ChunkEdgeLength;
+    }
+
+    public void Load()
     {
         if (_loaded || _scene.HasValue)
         {
@@ -35,19 +41,6 @@ public class Chunk : MonoBehaviour
         
         Addressables.LoadSceneAsync(ChunkName, LoadSceneMode.Additive).Completed += OnSceneLoaded;
         _loaded = true;
-    }
-
-    public void UnloadScene()
-    {
-        if (!_loaded || !_scene.HasValue)
-        {
-            _loaded = false;
-            return;
-        }
-
-        Addressables.UnloadSceneAsync(_scene.Value);
-        _scene = null;
-        _loaded = false;
     }
 
     private void OnSceneLoaded(AsyncOperationHandle<SceneInstance> asyncOperationHandle)
@@ -66,4 +59,35 @@ public class Chunk : MonoBehaviour
             Destroy(obj);
         }
     }
+
+    public void Unload()
+    {
+        if (!_loaded || !_scene.HasValue)
+        {
+            _loaded = false;
+            return;
+        }
+
+        Addressables.UnloadSceneAsync(_scene.Value);
+        _scene = null;
+        _loaded = false;
+    }
+
+    #region Gizmos
+
+    private void OnDrawGizmosSelected()
+    {
+        Random.InitState(ChunkName.Sum(c => c));
+        Gizmos.color = Random.ColorHSV(0, 1, 1, 1, 1, 1);
+        Gizmos.DrawCube(transform.position, new Vector3(ChunkEdgeLength * 2, 0, ChunkEdgeLength * 2));
+    }
+
+    private void OnDrawGizmos()
+    {
+        Random.InitState(ChunkName.Sum(c => c));
+        Gizmos.color = Random.ColorHSV(0, 1, 1, 1, 1, 1);
+        Gizmos.DrawWireCube(transform.position, new Vector3(ChunkEdgeLength * 2, 0, ChunkEdgeLength * 2));
+    }
+
+    #endregion
 }
