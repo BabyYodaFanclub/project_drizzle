@@ -8,12 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 4d49ffb9993bba540b61d1953ce3880e
-  - enabled: 1
-    path: Assets/Scenes/Chunk0.unity
-    guid: 252cc8a6b5dfd104aba549b07cc2c69b
-  - enabled: 1
-    path: Assets/Scenes/Chunk1.unity
-    guid: 5b60d9fb5d47c6545b03c5ac98f6c138
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 6f8a13128f9b26141be886ea60745fdb,
       type: 2}
