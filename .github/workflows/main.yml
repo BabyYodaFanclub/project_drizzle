@@ -44,6 +44,10 @@ jobs:
             Library-
       - uses: webbertakken/unity-builder@v0.11
         with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ProjectDrizzle-${{ matrix.targetPlatform }}
           buildMethod: BuildAddressablesProcessor.BuildAdressables
       - uses: webbertakken/unity-builder@v0.11
         with:
