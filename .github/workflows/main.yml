@@ -42,11 +42,6 @@ jobs:
           restore-keys: |
             Library-${{ matrix.projectPath }}-
             Library-
-      - uses: webbertakken/unity-activate@v1.2
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
       - uses: webbertakken/unity-builder@v0.11
         with:
           projectPath: ${{ matrix.projectPath }}
