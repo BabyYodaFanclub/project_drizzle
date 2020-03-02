@@ -48,7 +48,8 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
           buildName: ProjectDrizzle-${{ matrix.targetPlatform }}
-          buildMethod: EditorNamespace.BuildAddressablesProcessor.BuildPlayerHandler
+          buildMethod: BuildAddressablesProcessor.BuildPlayer
+          customParameters: -projectPath ${{ matrix.projectPath }} -unityVersion ${{ matrix.unityVersion }} -targetPlatform ${{ matrix.targetPlatform }} -buildName ProjectDrizzle-${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v1
         with:
           name: ProjectDrizzle-Build

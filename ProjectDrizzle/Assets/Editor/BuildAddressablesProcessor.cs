@@ -1,6 +1,9 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Linq;
+using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
+using UnityEngine;
 
 /// <summary>
 /// The script gives you choice to whether to build addressable bundles when clicking the build button.
@@ -8,12 +11,22 @@ using UnityEditor.AddressableAssets.Settings;
 /// For cloud build, put BuildAddressablesProcessor.PreExport as PreExport command.
 /// Discussion: https://forum.unity.com/threads/how-to-trigger-build-player-content-when-build-unity-project.689602/
 /// </summary>
-static class BuildAddressablesProcessor
+class BuildAddressablesProcessor
 {
     [InitializeOnLoadMethod]
     private static void Initialize()
     {
         BuildPlayerWindow.RegisterBuildPlayerHandler(BuildPlayerHandler);
+    }
+
+    private static void BuildPlayer()
+    {
+        PreExport();
+        string[] scenes = { "Assets/Scenes/MainScene.unity" };
+        var commandLineArgs = System.Environment.GetCommandLineArgs();
+        Console.WriteLine(commandLineArgs.Aggregate("", (s, s1) => s + ", " + s1));
+        Debug.Log(commandLineArgs.Aggregate("", (s, s1) => s + ", " + s1));
+        //BuildPipeline.BuildPlayer(scenes, );
     }
 
     private static void BuildPlayerHandler(BuildPlayerOptions options)
