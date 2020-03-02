@@ -1,26 +1,26 @@
-name: Acquire activation file
-on: [push]
-jobs:
-  activation:
-    name: Request manual activation file 🔑
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        unityVersion:
-          - 2019.3.3f1
-    steps:
-      # Checkout repository
-      - uses: actions/checkout@v2
-
-      # Request manual activation file
-      - uses: webbertakken/unity-request-manual-activation-file@v1.1
-        id: getManualLicenseFile
-        with:
-          unityVersion: ${{ matrix.unityVersion }}
-
-      # Upload artifact (Unity_v20XX.X.XXXX.alf)
-      - uses: actions/upload-artifact@v1
-        with:
-          name: Manual Activation File
-          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+#name: Acquire activation file
+#on: [push]
+#jobs:
+#  activation:
+#    name: Request manual activation file 🔑
+#    runs-on: ubuntu-latest
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        unityVersion:
+#          - 2019.3.3f1
+#    steps:
+#      # Checkout repository
+#      - uses: actions/checkout@v2
+#
+#      # Request manual activation file
+#      - uses: webbertakken/unity-request-manual-activation-file@v1.1
+#        id: getManualLicenseFile
+#        with:
+#          unityVersion: ${{ matrix.unityVersion }}
+#
+#      # Upload artifact (Unity_v20XX.X.XXXX.alf)
+#      - uses: actions/upload-artifact@v1
+#        with:
+#          name: Manual Activation File
+#          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
