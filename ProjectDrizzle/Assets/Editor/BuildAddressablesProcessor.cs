@@ -19,26 +19,16 @@ class BuildAddressablesProcessor
         BuildPlayerWindow.RegisterBuildPlayerHandler(BuildPlayerHandler);
     }
 
-    private static void BuildPlayer()
-    {
-        PreExport();
-        string[] scenes = { "Assets/Scenes/MainScene.unity" };
-        var commandLineArgs = System.Environment.GetCommandLineArgs();
-        Console.WriteLine(commandLineArgs.Aggregate("", (s, s1) => s + ", " + s1));
-        Debug.Log(commandLineArgs.Aggregate("", (s, s1) => s + ", " + s1));
-        //BuildPipeline.BuildPlayer(scenes, );
-    }
-
     private static void BuildPlayerHandler(BuildPlayerOptions options)
     {
-        PreExport();
+        BuildAdressables();
         BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
     }
     
     /// <summary>
     /// Run a clean build before export.
     /// </summary>
-    public static void PreExport()
+    public static void BuildAdressables()
     {
         AddressableAssetSettings.CleanPlayerContent(AddressableAssetSettingsDefaultObject.Settings.ActivePlayerDataBuilder);
         AddressableAssetSettings.BuildPlayerContent();
