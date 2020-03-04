@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -46,17 +47,25 @@ public class Chunk : MonoBehaviour
     private void OnSceneLoaded(AsyncOperationHandle<SceneInstance> asyncOperationHandle)
     {
         _scene = asyncOperationHandle.Result;
-        var sceneObjects = _scene.Value.Scene
-            .GetRootGameObjects();
+        RelocateChunkObjectsToChunk(_scene.Value.Scene.GetRootGameObjects());
+    }
+
+    public void RelocateChunkObjectsToChunk(IEnumerable<GameObject> chunkObjects)
+    {
+        var chunkObjectsList = chunkObjects.ToList();
         
-        foreach (var sceneObject in sceneObjects.Where(o => !o.name.StartsWith(DebugObjectsPrefix)))
+        foreach (var sceneObject in chunkObjectsList.Where(o => !o.name.StartsWith(DebugObjectsPrefix)))
         {
             sceneObject.transform.position = transform.position;
         }
-
-        foreach (var obj in sceneObjects.Where(o => o.name.StartsWith(DebugObjectsPrefix, StringComparison.InvariantCultureIgnoreCase)))
+        
+        if (Application.isPlaying)
         {
-            Destroy(obj);
+            foreach (var obj in chunkObjectsList.Where(o =>
+                o.name.StartsWith(DebugObjectsPrefix, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                Destroy(obj);
+            }
         }
     }
 

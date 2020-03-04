@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,7 @@ using Object = UnityEngine.Object;
 /// </summary>
 public static class PlayFromTheFirstScene
 {
-    private const string PlayFromFirstMenuStr = "Edit/Always Start From Scene 0 &p";
+    private const string PlayFromFirstMenuStr = "Edit/Always Start from the Main Scene &p";
     private const string TeleportPlayerMenuStr = "Edit/Teleport Player to started Chunk &t";
 
     private static bool PlayFromFirstScene
@@ -31,7 +32,7 @@ public static class PlayFromTheFirstScene
         PlayFromFirstScene = !PlayFromFirstScene;
         Menu.SetChecked(PlayFromFirstMenuStr, PlayFromFirstScene);
 
-        ShowNotifyOrLog(PlayFromFirstScene ? "Play from scene 0" : "Play from current scene");
+        EditorLogger.NotifyAndLog(PlayFromFirstScene ? "Play from scene 0" : "Play from current scene");
     }
 
     // The menu won't be gray out, we use this validate method for update check state
@@ -48,7 +49,7 @@ public static class PlayFromTheFirstScene
         TeleportPlayerToCorrectChunk = !TeleportPlayerToCorrectChunk;
         Menu.SetChecked(TeleportPlayerMenuStr, TeleportPlayerToCorrectChunk);
 
-        ShowNotifyOrLog(TeleportPlayerToCorrectChunk ? "Teleport player to the started chunk" : "Do not teleport player");
+        EditorLogger.NotifyAndLog(TeleportPlayerToCorrectChunk ? "Teleport player to the started chunk" : "Do not teleport player");
     }
 
     // The menu won't be gray out, we use this validate method for update check state
@@ -98,13 +99,5 @@ public static class PlayFromTheFirstScene
         var player = GameObject.FindGameObjectWithTag("Player");
 
         player.transform.position = targetChunk.transform.position;
-    }
-
-    private static void ShowNotifyOrLog(string msg)
-    {
-        if (Resources.FindObjectsOfTypeAll<SceneView>().Length > 0)
-            EditorWindow.GetWindow<SceneView>().ShowNotification(new GUIContent(msg));
-        else
-            Debug.Log(msg); // When there's no scene view opened, we just print a log
     }
 }
