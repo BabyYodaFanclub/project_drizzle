@@ -11,7 +11,7 @@ using Object = UnityEngine.Object;
 public static class ChunksMenu
 {
     private const string OpenChunksInMainSceneMenuStr = "Chunks/Open Chunks in Main Scene &c";
-    private const string CloseChunksInMainSceneMenuStr = "Chunks/Close Chunk Scenes in Main Scene &#C";
+    private const string CloseChunksInMainSceneMenuStr = "Chunks/Close Chunk Scenes in Main Scene %#C";
 
     [MenuItem (OpenChunksInMainSceneMenuStr, false, 10)]
     private static void DoOpenChunksInMainScene()
