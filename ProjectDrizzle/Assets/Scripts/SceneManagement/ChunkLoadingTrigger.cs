@@ -10,7 +10,23 @@ public class ChunkLoadingTrigger : MonoBehaviour
     public Collider[] ExitColliders;
     public string ChunkName;
     private Chunk _chunk;
-    
+
+    public Chunk TargetChunk
+    {
+        get
+        {
+            if (_chunk == null)
+            {
+                // TODO Write a chunk manager in the main scene
+                _chunk = FindObjectsOfType<Chunk>()
+                    .First(c => c.ChunkName.Equals(ChunkName, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            return _chunk;
+        }
+        set => _chunk = value;
+    }
+
     private void Awake()
     {
         foreach (var childRenderer in GetComponentsInChildren<Renderer>())
@@ -24,10 +40,6 @@ public class ChunkLoadingTrigger : MonoBehaviour
     {
         Assert.IsFalse(string.IsNullOrWhiteSpace(ChunkName));
         
-        // TODO Write a chunk manager in the main scene
-        _chunk = FindObjectsOfType<Chunk>()
-                    .First(c => c.ChunkName.Equals(ChunkName, StringComparison.InvariantCultureIgnoreCase));
-
         foreach (var col in EnterColliders)
             GetEventEmitterForCollider(col).OnTriggerEnterEvent += OnLoadTrigger;
 
@@ -37,12 +49,12 @@ public class ChunkLoadingTrigger : MonoBehaviour
 
     private void OnLoadTrigger(Collider other)
     {
-        _chunk.Load();
+        TargetChunk.Load();
     }
 
     private void OnUnloadTrigger(Collider other)
     {
-        _chunk.Unload();
+        TargetChunk.Unload();
     }
 
     private static ColliderEventEmitter GetEventEmitterForCollider(Collider c)

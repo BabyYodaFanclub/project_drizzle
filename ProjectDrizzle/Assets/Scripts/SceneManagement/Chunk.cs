@@ -10,17 +10,20 @@ using Random = UnityEngine.Random;
 
 public class Chunk : MonoBehaviour
 {
+    public string ChunkName;
+    
     private const int ChunkEdgeLength = 50;
     private const string DebugObjectsPrefix = "Debug";
+
+    private SceneInstance? _sceneInstance;
+    private Scene? _scene;
     
-    public string ChunkName;
-    private SceneInstance? _scene;
-    private bool _loaded;
+    public bool Loaded => _scene.HasValue || _sceneInstance.HasValue;
 
     private void Start()
     {
         Debug.Assert(!string.IsNullOrWhiteSpace(ChunkName), nameof(ChunkName) + " is null or whitespace");
-        
+
         if (IsPlayerInChunk())
             Load();
     }
@@ -34,31 +37,29 @@ public class Chunk : MonoBehaviour
 
     public void Load()
     {
-        if (_loaded || _scene.HasValue)
+        if (Loaded)
         {
-            _loaded = true;
             return;
         }
-        
+
         Addressables.LoadSceneAsync(ChunkName, LoadSceneMode.Additive).Completed += OnSceneLoaded;
-        _loaded = true;
     }
 
     private void OnSceneLoaded(AsyncOperationHandle<SceneInstance> asyncOperationHandle)
     {
-        _scene = asyncOperationHandle.Result;
-        RelocateChunkObjectsToChunk(_scene.Value.Scene.GetRootGameObjects());
+        _sceneInstance = asyncOperationHandle.Result;
+        RelocateChunkObjectsToChunk(_sceneInstance.Value.Scene.GetRootGameObjects());
     }
 
     public void RelocateChunkObjectsToChunk(IEnumerable<GameObject> chunkObjects)
     {
         var chunkObjectsList = chunkObjects.ToList();
-        
+
         foreach (var sceneObject in chunkObjectsList.Where(o => !o.name.StartsWith(DebugObjectsPrefix)))
         {
             sceneObject.transform.position = transform.position;
         }
-        
+
         if (Application.isPlaying)
         {
             foreach (var obj in chunkObjectsList.Where(o =>
@@ -71,15 +72,27 @@ public class Chunk : MonoBehaviour
 
     public void Unload()
     {
-        if (!_loaded || !_scene.HasValue)
+        if (!Loaded)
         {
-            _loaded = false;
             return;
         }
 
-        Addressables.UnloadSceneAsync(_scene.Value);
-        _scene = null;
-        _loaded = false;
+        if (_sceneInstance.HasValue)
+        {
+            Addressables.UnloadSceneAsync(_sceneInstance.Value);
+            _sceneInstance = null;
+        }
+        else if (_scene.HasValue)
+        {
+            SceneManager.UnloadSceneAsync(_scene.Value, UnloadSceneOptions.None);
+            _scene = null;
+        }
+    }
+
+    public void AssignOpenScene(Scene sceneForChunk)
+    {
+        _scene = sceneForChunk;
+        RelocateChunkObjectsToChunk(_scene.Value.GetRootGameObjects());
     }
 
     #region Gizmos

@@ -14,28 +14,31 @@ namespace Editor
             get => EditorPrefs.HasKey(MainSceneIndexKey) ? EditorPrefs.GetInt(MainSceneIndexKey) : 0;
             set => EditorPrefs.SetInt(MainSceneIndexKey, value);
         }
+        
+        public static EditorBuildSettingsScene MainScene => EditorBuildSettings.scenes[MainSceneIndex];
 
         [MenuItem(SetMainSceneMenuStr, false, 10)]
         private static void SetMainSceneMenu()
         {
-            var index = SceneManager.GetActiveScene().buildIndex;
+            var scene = SceneManager.GetActiveScene();
+            var index = scene.buildIndex;
 
             if (index < 0)
             {
-                EditorLogger.NotifyAndLog($"The Scene has to be registered in the Build Settings first!");
+                EditorLogger.NotifyAndLogWarning($"The Scene has to be registered in the Build Settings first!");
                 return;
             }
             
-            MainSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            MainSceneIndex = index;
             
-            EditorLogger.NotifyAndLog($"Main Scene set to {SceneManager.GetSceneByBuildIndex(index).name}");
+            EditorLogger.NotifyAndLog($"Main Scene set to {scene.name}");
         }
 
         // The menu won't be gray out, we use this validate method for update check state
         [MenuItem(SetMainSceneMenuStr, true)]
         private static bool SetMainSceneMenuValidate()
         {
-            return SceneManager.GetActiveScene().buildIndex != MainSceneIndex;
+            return SceneManager.GetActiveScene().buildIndex != MainSceneIndex && !Application.isPlaying;
         }
     }
 }

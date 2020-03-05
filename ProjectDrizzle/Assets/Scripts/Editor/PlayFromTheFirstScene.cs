@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Editor;
 using UnityEditor;
@@ -49,7 +50,9 @@ public static class PlayFromTheFirstScene
         TeleportPlayerToCorrectChunk = !TeleportPlayerToCorrectChunk;
         Menu.SetChecked(TeleportPlayerMenuStr, TeleportPlayerToCorrectChunk);
 
-        EditorLogger.NotifyAndLog(TeleportPlayerToCorrectChunk ? "Teleport player to the started chunk" : "Do not teleport player");
+        EditorLogger.NotifyAndLog(TeleportPlayerToCorrectChunk
+            ? "Teleport player to the started chunk"
+            : "Do not teleport player");
     }
 
     // The menu won't be gray out, we use this validate method for update check state
@@ -60,44 +63,86 @@ public static class PlayFromTheFirstScene
         return true;
     }
 
-    // This method is called before any Awake. It's the perfect callback for this feature
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void LoadFirstSceneAtGameBegins()
+    private static void LoadMainSceneAtPlay()
     {
         if (!PlayFromFirstScene)
             return;
 
         if (EditorBuildSettings.scenes.Length == 0)
         {
-            Debug.LogWarning("The scene build list is empty. Can't play from first scene.");
+            EditorLogger.NotifyAndLogWarning("The scene build list is empty. Can't play from first scene.");
             return;
         }
 
-        var startedSceneName = SceneManager.GetActiveScene().name;
-        
-        SceneManager.LoadSceneAsync(0).completed += obj => OnSceneLoaded(obj, startedSceneName);
-        
+        var openScenes = MyEditorSceneManager.GetOpenScenes();
+
+        if (SceneManager.GetActiveScene().buildIndex == MainSceneIndexEditor.MainSceneIndex)
+        {
+            Debug.Log("The main scene was started, cannot infer chunk to teleport the player to");
+            return;
+        }
+
+        var openSceneNames = openScenes
+            .Where(scene => scene.buildIndex != MainSceneIndexEditor.MainSceneIndex)
+            .Select(scene => scene.name)
+            .ToList();
+
+        SceneManager.LoadSceneAsync(MainSceneIndexEditor.MainSceneIndex).completed +=
+            _ => OnSceneLoaded(openSceneNames);
     }
 
-    private static void OnSceneLoaded(AsyncOperation obj, string startedSceneName)
+    private static void OnSceneLoaded(IList<string> startedScenes)
     {
-        if (!TeleportPlayerToCorrectChunk || SceneManager.GetActiveScene().name.Equals(startedSceneName, StringComparison.InvariantCultureIgnoreCase))
+        if (!TeleportPlayerToCorrectChunk)
         {
             return;
         }
-        
-        var chunks = Object.FindObjectsOfType<Chunk>().ToList();
-        var targetChunk = chunks
-            .FirstOrDefault(s => s.ChunkName.Equals(startedSceneName, StringComparison.InvariantCultureIgnoreCase));
 
-        if (targetChunk == null)
+        var targetChunks = Object.FindObjectsOfType<Chunk>()
+            .Where(chunk =>
+                startedScenes
+                    .Any(scene =>
+                        scene.ToUpper().Contains(chunk.ChunkName.ToUpper()))
+            )
+            .ToList();
+
+        if (targetChunks.Count == 0)
         {
-            Debug.LogWarning($"The started Scene {startedSceneName} does not exist as a chunk in the main scene. Cannot place player in the correct chunk.");
+            Debug.LogWarning(
+                $"The started Scenes do not exist as a chunk in the main scene. Cannot place player in the correct chunk.");
             return;
         }
-        
+
         var player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.position = targetChunks.First().transform.position;
+    }
 
-        player.transform.position = targetChunk.transform.position;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void AssignChunksAtPlay()
+    {
+        var openScenes = MyEditorSceneManager.GetOpenScenes();
+
+        var targetChunks = Object.FindObjectsOfType<Chunk>()
+            .Where(chunk => !chunk.Loaded);
+
+        foreach (var chunk in targetChunks)
+        {
+            var scenesForChunk = openScenes
+                .Where(s => s.name.ToUpper().Contains(chunk.ChunkName.ToUpper()))
+                .ToList();
+
+            var sceneForChunk = scenesForChunk.FirstOrDefault();
+            if (sceneForChunk == default)
+                continue;
+
+            chunk.AssignOpenScene(sceneForChunk);
+            
+            // Remove the unnecessary instances of the same chunk
+            foreach (var scene in scenesForChunk.Skip(1))
+            {
+                SceneManager.UnloadSceneAsync(scene);
+            }
+        }
     }
 }
