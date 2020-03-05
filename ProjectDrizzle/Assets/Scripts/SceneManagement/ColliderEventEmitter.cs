@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 public class ColliderEventEmitter : MonoBehaviour
 {
     public event Action<Collider> OnTriggerEnterEvent;
+    public event Action<Collider> OnTriggerExitEvent;
 
     private void Start()
     {
@@ -15,5 +16,10 @@ public class ColliderEventEmitter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         OnTriggerEnterEvent?.Invoke(other);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        OnTriggerExitEvent?.Invoke(other);
     }
 }

@@ -24,7 +24,6 @@ public class ChunkLoadingTrigger : MonoBehaviour
 
             return _chunk;
         }
-        set => _chunk = value;
     }
 
     private void Awake()
@@ -41,10 +40,10 @@ public class ChunkLoadingTrigger : MonoBehaviour
         Assert.IsFalse(string.IsNullOrWhiteSpace(ChunkName));
         
         foreach (var col in EnterColliders)
-            GetEventEmitterForCollider(col).OnTriggerEnterEvent += OnLoadTrigger;
+            GetEventEmitterForCollider(col).OnTriggerExitEvent += OnLoadTrigger;
 
         foreach (var col in ExitColliders)
-            GetEventEmitterForCollider(col).OnTriggerEnterEvent += OnUnloadTrigger;
+            GetEventEmitterForCollider(col).OnTriggerExitEvent += OnUnloadTrigger;
     }
 
     private void OnLoadTrigger(Collider other)
@@ -71,9 +70,9 @@ public class ChunkLoadingTrigger : MonoBehaviour
     private void OnDestroy()
     {
         foreach (var col in EnterColliders)
-            GetEventEmitterForCollider(col).OnTriggerEnterEvent -= OnLoadTrigger;
+            GetEventEmitterForCollider(col).OnTriggerExitEvent -= OnLoadTrigger;
 
         foreach (var col in ExitColliders)
-            GetEventEmitterForCollider(col).OnTriggerEnterEvent -= OnUnloadTrigger;
+            GetEventEmitterForCollider(col).OnTriggerExitEvent -= OnUnloadTrigger;
     }
 }

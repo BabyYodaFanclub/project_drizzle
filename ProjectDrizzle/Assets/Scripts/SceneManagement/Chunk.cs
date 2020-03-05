@@ -17,8 +17,11 @@ public class Chunk : MonoBehaviour
 
     private SceneInstance? _sceneInstance;
     private Scene? _scene;
+    private bool _loading;
     
     public bool Loaded => _scene.HasValue || _sceneInstance.HasValue;
+
+    public bool Loading => _loading;
 
     private void Start()
     {
@@ -37,11 +40,12 @@ public class Chunk : MonoBehaviour
 
     public void Load()
     {
-        if (Loaded)
+        if (Loaded || _loading)
         {
             return;
         }
 
+        _loading = true;
         Addressables.LoadSceneAsync(ChunkName, LoadSceneMode.Additive).Completed += OnSceneLoaded;
     }
 
@@ -49,6 +53,7 @@ public class Chunk : MonoBehaviour
     {
         _sceneInstance = asyncOperationHandle.Result;
         RelocateChunkObjectsToChunk(_sceneInstance.Value.Scene.GetRootGameObjects());
+        _loading = false;
     }
 
     public void RelocateChunkObjectsToChunk(IEnumerable<GameObject> chunkObjects)
@@ -91,6 +96,12 @@ public class Chunk : MonoBehaviour
 
     public void AssignOpenScene(Scene sceneForChunk)
     {
+        if (Loaded || _loading)
+        {
+            SceneManager.UnloadSceneAsync(sceneForChunk);
+            return;
+        }
+        
         _scene = sceneForChunk;
         RelocateChunkObjectsToChunk(_scene.Value.GetRootGameObjects());
     }
