@@ -31,6 +31,18 @@ MonoBehaviour:
     - Scene
     m_mainAssetType: UnityEditor.SceneAsset, UnityEditor, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  - m_GUID: 94b3647cc3eafd4438fff622c891c1f8
+    m_Address: Chunk2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEditor.SceneAsset, UnityEditor, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - m_GUID: df93da5f5d2633b4ebd0562caa954e50
+    m_Address: Chunk3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEditor.SceneAsset, UnityEditor, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 989840bf60d140e428392884277f8357, type: 2}
   m_SchemaSet:
