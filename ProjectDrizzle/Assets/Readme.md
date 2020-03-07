@@ -27,3 +27,14 @@ Der Sinn dahinter ist, dass alle Chunks im Kontext der Hauptszene Sinn machen.
 Der Spieler wird dann in die Mitte der Szene teleportiert.
 
 Per **`Alt+P`** kann das Ladeverhalten und per **`Alt+T`** der automatische Teleport getoggelt werden.
+
+### MainSceneIndexEditor.cs
+
+Fügt ein Menü hinzu um die aktuelle Szene als Main Scene des Spiel zu setzen, von der bei Play aus gestartet werden soll.
+Der Index wird in ChunksMenu.cs und PlayFromFirstScene.cs verwendet.
+
+### ChunksMenu.cs
+
+Fügt ein Menü für Chunks hinzu.
+Ermöglicht für alle Chunks in der Main Scene additiv die zugeordnete Scene zu öffnen und auch wieder zu schließen.
+Außerdem kann die aktuelle ChunkScene in der Main Scene geöffnet werden.

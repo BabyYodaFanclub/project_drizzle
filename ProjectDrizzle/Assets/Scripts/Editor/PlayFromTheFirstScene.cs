@@ -67,6 +67,11 @@ public static class PlayFromTheFirstScene
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void LoadMainSceneAtPlay()
     {
+        LoadMainSceneAtPlayAsync();
+    }
+
+    private static async void LoadMainSceneAtPlayAsync()
+    {
         if (!PlayFromFirstScene)
             return;
 
@@ -80,7 +85,6 @@ public static class PlayFromTheFirstScene
 
         if (openScenes.Any(scene => scene.buildIndex == MainSceneIndexEditor.MainSceneIndex))
         {
-            Debug.Log("The main scene was started, cannot infer chunk to teleport the player to");
             return;
         }
 
@@ -89,21 +93,25 @@ public static class PlayFromTheFirstScene
             .OrderByDescending(scene => SceneManager.GetActiveScene().name == scene.name)
             .Select(scene => scene.name)
             .ToList();
-        
-        SceneManager.LoadSceneAsync(MainSceneIndexEditor.MainSceneIndex, LoadSceneMode.Additive).completed +=
-            _ => OnSceneLoaded(openSceneNames);
-    }
 
-    private static void OnSceneLoaded(IList<string> startedScenes)
-    {
-        if (!TeleportPlayerToCorrectChunk)
+        SceneManager.LoadSceneAsync(MainSceneIndexEditor.MainSceneIndex, LoadSceneMode.Additive);
+
+        while (MyEditorSceneManager.GetOpenScenes().Any(scene => !scene.isLoaded))
         {
-            return;
+            await Task.Delay(100);
         }
 
+        if (TeleportPlayerToCorrectChunk)
+        {
+            TeleportPlayerToOpenedChunk(openSceneNames);
+        }
+    }
+
+    private static void TeleportPlayerToOpenedChunk(IEnumerable<string> openSceneNames)
+    {
         var targetChunks = Object.FindObjectsOfType<Chunk>()
             .Where(chunk =>
-                startedScenes
+                openSceneNames
                     .Any(scene =>
                         scene.ToUpper().Contains(chunk.ChunkName.ToUpper()))
             )
@@ -128,16 +136,14 @@ public static class PlayFromTheFirstScene
 
     private static async void WaitForScenesLoadedThenAssignChunks()
     {
-        var openScenes = MyEditorSceneManager.GetOpenScenes();
-
         while (MyEditorSceneManager.GetOpenScenes().Any(scene => !scene.isLoaded))
         {
             await Task.Delay(100);
         }
-        openScenes = MyEditorSceneManager.GetOpenScenes();
+
         var chunks = Object.FindObjectsOfType<Chunk>();
 
-        var openChunkScenes = openScenes
+        var openChunkScenes = MyEditorSceneManager.GetOpenScenes()
             .Where(scene =>
                 chunks.Any(chunk =>
                     scene.name.ToUpper().Contains(chunk.ChunkName.ToUpper())))
@@ -158,7 +164,7 @@ public static class PlayFromTheFirstScene
                 continue;
 
             chunk.AssignOpenScene(sceneForChunk);
-            
+
             // Remove the unnecessary instances of the same chunk
             foreach (var scene in scenesForChunk.Skip(1))
             {
