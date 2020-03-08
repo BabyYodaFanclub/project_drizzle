@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Jens
   m_EditorClassIdentifier: 
   Name: Jens
+  Thumbnail: {fileID: 2800000, guid: de7b39e685b743149bb78248b772265a, type: 3}
