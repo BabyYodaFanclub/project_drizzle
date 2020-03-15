@@ -24,7 +24,7 @@ namespace Editor.Dialogue
             if (_numberForkNode == null) _numberForkNode = (DialogueNumberForkNode) target;
             
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.InputNode)));
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.VariableName)));
+            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.Variable)));
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.ComparisonValue)));
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.Bigger)));
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.Equal)));

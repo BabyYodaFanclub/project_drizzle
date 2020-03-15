@@ -12,4 +12,5 @@ public abstract class DialogueBaseNode : Node
 	}
 
 	public abstract void OnUpdateNode();
+	public abstract DialogueBaseNode GetNextNode();
 }

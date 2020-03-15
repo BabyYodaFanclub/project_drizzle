@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3593367903933328225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 354b0a399b194fae9be3768dae861a85, type: 3}
+  m_Name: NumberFork
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 241, y: -193.5}
+  ports:
+    keys:
+    - InputNode
+    - Bigger
+    - Equal
+    - Smaller
+    - Variable
+    values:
+    - _fieldName: InputNode
+      _node: {fileID: -3593367903933328225}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: Bigger
+      _node: {fileID: -3593367903933328225}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+    - _fieldName: Equal
+      _node: {fileID: -3593367903933328225}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+    - _fieldName: Smaller
+      _node: {fileID: -3593367903933328225}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+    - _fieldName: Variable
+      _node: {fileID: -3593367903933328225}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Value
+        node: {fileID: -1795920579831579100}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+  InputNode: {fileID: 0}
+  Variable: 0
+  Bigger: {fileID: 0}
+  Equal: {fileID: 0}
+  Smaller: {fileID: 0}
+  ComparisonValue: 3.44
+--- !u!114 &-1795920579831579100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e6158262ec4f96adbcc3e71789c0f3, type: 3}
+  m_Name: Variable
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -152, y: -168}
+  ports:
+    keys:
+    - Value
+    values:
+    - _fieldName: Value
+      _node: {fileID: -1795920579831579100}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Variable
+        node: {fileID: -3593367903933328225}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  Value: 0
+  VariableName: 
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce1425cfe349c749a5de6c11562ba6b, type: 3}
+  m_Name: NewDialogue
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -3593367903933328225}
+  - {fileID: -1795920579831579100}

@@ -6,7 +6,7 @@ using XNodeEditor;
 namespace Editor.Dialogue
 {
     [CustomNodeEditor(typeof(DialogueStatementNode))]
-    public class DialogueNodeEditorStatement : DialogueNodeEditorBase
+    public class DialogueStatementNodeEditor : DialogueNodeEditorBase
     {
         private DialogueStatementNode _statementNode;
         private bool _selected;
@@ -30,8 +30,8 @@ namespace Editor.Dialogue
             }
             else
             {
-                NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_statementNode.InputNode)));
-                NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_statementNode.OutputNode)));
+                NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_statementNode.PredecessorNode)));
+                NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_statementNode.SuccessorNode)));
 
                 var speaker = _statementNode.Speaker;
                 if (speaker && speaker.Thumbnail)
