@@ -32,7 +32,7 @@ namespace Editor.Dialogue
             var dialogueGraph = (DialogueGraph) _variableNode.graph;
             var options = dialogueGraph.Variables.Keys.ToArray();
             var selectedValue =  EditorGUILayout.Popup("Variable:", options.ToList().IndexOf(_variableNode.VariableName), options);
-            _variableNode.VariableName = options[selectedValue];
+            _variableNode.VariableName = selectedValue >= 0 ? options[selectedValue] : "";
 
             /*if (_selected)
             {
