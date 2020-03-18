@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Statement
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -232, y: -392}
+  position: {x: -232, y: -456}
   ports:
     keys:
     - PredecessorNode
@@ -46,7 +46,9 @@ MonoBehaviour:
   PredecessorNode: {fileID: 0}
   SuccessorNode: {fileID: 0}
   Speaker: {fileID: 11400000, guid: 415fcee438410f848b9845c752302c5c, type: 2}
-  DialogueText: Hello
+  DialogueText: 'Hello
+
+    There'
 --- !u!114 &-3593367903933328225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +62,7 @@ MonoBehaviour:
   m_Name: NumberFork
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: -280}
+  position: {x: 152, y: -280}
   ports:
     keys:
     - InputNode
@@ -86,8 +88,8 @@ MonoBehaviour:
       _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: End
-        node: {fileID: -640533027683336407}
+      - fieldName: PredecessorNode
+        node: {fileID: 1579583849111764599}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -148,7 +150,7 @@ MonoBehaviour:
   m_Name: Variable
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -296, y: -200}
+  position: {x: -312, y: -152}
   ports:
     keys:
     - Value
@@ -177,10 +179,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e13b67bdb942d8877cfe1b444d67df, type: 3}
-  m_Name: End
+  m_Name: Dialogue End
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 440, y: -216}
+  position: {x: 760, y: -216}
   ports:
     keys:
     - End
@@ -190,11 +192,11 @@ MonoBehaviour:
       _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Bigger
-        node: {fileID: -3593367903933328225}
-        reroutePoints: []
       - fieldName: Equal
         node: {fileID: -3593367903933328225}
+        reroutePoints: []
+      - fieldName: SuccessorNode
+        node: {fileID: 1579583849111764599}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -211,7 +213,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bce1425cfe349c749a5de6c11562ba6b, type: 3}
-  m_Name: NewDialogue
+  m_Name: TestForkDialogue
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: -3593367903933328225}
@@ -221,6 +223,7 @@ MonoBehaviour:
   - {fileID: -3086567852466476293}
   - {fileID: -640533027683336407}
   - {fileID: 1539953108192099372}
+  - {fileID: 1579583849111764599}
   Variables:
     reorderableList:
       canAdd: 1
@@ -263,7 +266,7 @@ MonoBehaviour:
   m_Name: VariableChange
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 424, y: -40}
+  position: {x: 408, y: -56}
   ports:
     keys:
     - PredecessorNode
@@ -297,6 +300,53 @@ MonoBehaviour:
   SuccessorNode: {fileID: 0}
   VariableName: test
   Value: 22
+--- !u!114 &1579583849111764599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b204500bde46358c56629df218306a, type: 3}
+  m_Name: Statement
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 392, y: -472}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNode
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: 1579583849111764599}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Bigger
+        node: {fileID: -3593367903933328225}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNode
+      _node: {fileID: 1579583849111764599}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: End
+        node: {fileID: -640533027683336407}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  SuccessorNode: {fileID: 0}
+  Speaker: {fileID: 0}
+  DialogueText: 
 --- !u!114 &3713907600332341685
 MonoBehaviour:
   m_ObjectHideFlags: 0
