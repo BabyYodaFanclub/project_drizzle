@@ -4,7 +4,7 @@
 public class ThirdPersonOrbitCamBasic : MonoBehaviour 
 {
 	public Transform player;                                           // Player's reference.
-	public Vector3 pivotOffset = new Vector3(0.0f, 1.0f,  0.0f);       // Offset to repoint the camera.
+	public Vector3 pivotOffset = new Vector3(0.0f, 1.0f,  0.0f);       // Offset to repaint the camera.
 	public Vector3 camOffset   = new Vector3(0.4f, 0.5f, -2.0f);       // Offset to relocate the camera related to the player position.
 	public float smooth = 10f;                                         // Speed of camera responsiveness.
 	public float horizontalAimingSpeed = 6f;                           // Horizontal turn speed.
@@ -16,16 +16,18 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 
 	private float angleH = 0;                                          // Float to store camera horizontal angle related to mouse movement.
 	private float angleV = 0;                                          // Float to store camera vertical angle related to mouse movement.
-	private Transform cam;                                             // This transform.
+	private Transform camTransform;                                             // This transform.
+	private Camera cam;
 	private Vector3 relCameraPos;                                      // Current camera position relative to the player.
 	private float relCameraPosMag;                                     // Current camera distance to the player.
 	private Vector3 smoothPivotOffset;                                 // Camera current pivot offset on interpolation.
 	private Vector3 smoothCamOffset;                                   // Camera current offset on interpolation.
-	private Vector3 targetPivotOffset;                                 // Camera pivot offset target to iterpolate.
+	private Vector3 targetPivotOffset;                                 // Camera pivot offset target to interpolate.
 	private Vector3 targetCamOffset;                                   // Camera offset target to interpolate.
 	private float defaultFOV;                                          // Default camera Field of View.
 	private float targetFOV;                                           // Target camera Field of View.
 	private float targetMaxVerticalAngle;                              // Custom camera max vertical clamp angle.
+	private float playerFocusHeight;
 
 	// Get the camera horizontal angle.
 	public float GetH { get { return angleH; } }
@@ -33,11 +35,13 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	void Awake()
 	{
 		// Reference to the camera transform.
-		cam = transform;
-
+		camTransform = transform;
+		cam = camTransform.GetComponent<Camera>();
+		playerFocusHeight = player.GetComponent<CapsuleCollider> ().height * 0.75f;
+		
 		// Set camera default position.
-		cam.position = player.position + Quaternion.identity * pivotOffset + Quaternion.identity * camOffset;
-		cam.rotation = Quaternion.identity;
+		camTransform.position = player.position + Quaternion.identity * pivotOffset + Quaternion.identity * camOffset;
+		camTransform.rotation = Quaternion.identity;
 
 		// Get camera position relative to the player, used for collision test.
 		relCameraPos = transform.position - player.position;
@@ -46,7 +50,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		// Set up references and default values.
 		smoothPivotOffset = pivotOffset;
 		smoothCamOffset = camOffset;
-		defaultFOV = cam.GetComponent<Camera>().fieldOfView;
+		defaultFOV = camTransform.GetComponent<Camera>().fieldOfView;
 		angleH = player.eulerAngles.y;
 
 		ResetTargetOffsets ();
@@ -70,10 +74,10 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		// Set camera orientation.
 		Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
 		Quaternion aimRotation = Quaternion.Euler(-angleV, angleH, 0);
-		cam.rotation = aimRotation;
+		camTransform.rotation = aimRotation;
 
 		// Set FOV.
-		cam.GetComponent<Camera>().fieldOfView = Mathf.Lerp (cam.GetComponent<Camera>().fieldOfView, targetFOV,  Time.deltaTime);
+		cam.fieldOfView = Mathf.Lerp (cam.fieldOfView, targetFOV,  Time.deltaTime);
 
 		// Test for collision with the environment based on current camera position.
 		Vector3 baseTempPosition = player.position + camYRotation * targetPivotOffset;
@@ -91,7 +95,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		smoothPivotOffset = Vector3.Lerp(smoothPivotOffset, targetPivotOffset, smooth * Time.deltaTime);
 		smoothCamOffset = Vector3.Lerp(smoothCamOffset, noCollisionOffset, smooth * Time.deltaTime);
 
-		cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
+		camTransform.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
 	}
 
 	// Set camera offsets to custom values.
@@ -153,7 +157,6 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	// Double check for collisions: concave objects doesn't detect hit from outside, so cast in both directions.
 	bool DoubleViewingPosCheck(Vector3 checkPos, float offset)
 	{
-		float playerFocusHeight = player.GetComponent<CapsuleCollider> ().height * 0.75f;
 		return ViewingPosCheck (checkPos, playerFocusHeight) && ReverseViewingPosCheck (checkPos, playerFocusHeight, offset);
 	}
 
@@ -166,7 +169,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		if (Physics.SphereCast(checkPos, 0.2f, target - checkPos, out RaycastHit hit, relCameraPosMag))
 		{
 			// ... if it is not the player...
-			if(hit.transform != player && !hit.transform.GetComponent<Collider>().isTrigger)
+			if(hit.transform != player && !hit.collider.isTrigger)
 			{
 				// This position isn't appropriate.
 				return false;
@@ -183,7 +186,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		Vector3 origin = player.position + (Vector3.up * deltaPlayerHeight);
 		if (Physics.SphereCast(origin, 0.2f, checkPos - origin, out RaycastHit hit, maxDistance))
 		{
-			if(hit.transform != player && hit.transform != transform && !hit.transform.GetComponent<Collider>().isTrigger)
+			if(hit.transform != player && hit.transform != transform && !hit.collider.isTrigger)
 			{
 				return false;
 			}
