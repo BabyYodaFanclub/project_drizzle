@@ -2,7 +2,7 @@ using UnityEngine;
 using XNode;
 
 [CreateNodeMenu("End")]
-[NodeTint(100, 100, 100), NodeWidth(80)]
+[NodeTint(200, 100, 100), NodeWidth(80)]
 public class DialogueEndNode : DialogueBaseNode
 {
     [Input(ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] public DialogueBaseNode End;

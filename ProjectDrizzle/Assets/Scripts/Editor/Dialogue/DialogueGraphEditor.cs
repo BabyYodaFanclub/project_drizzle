@@ -23,12 +23,16 @@ namespace Editor.Dialogue
 
             return null;
         }
-
+        
         public override void OnCreate()
         {
             base.OnCreate();
-            CreateNode(typeof(DialogueStartNode), Vector2.left * 400);
-            CreateNode(typeof(DialogueEndNode), Vector2.right * 400);
+            
+            if (!((DialogueGraph)target).nodes.Any(n => n is DialogueStartNode))
+                CreateNode(typeof(DialogueStartNode), Vector2.left * 400);
+            
+            if (!((DialogueGraph)target).nodes.Any(n => n is DialogueEndNode))
+                CreateNode(typeof(DialogueEndNode), Vector2.right * 400);
         }
 
         public override void OnGUI()
@@ -44,6 +48,8 @@ namespace Editor.Dialogue
 
             _newValueFade = EditorGUILayout.ToggleLeft("Graph Variables", _newValueFade,
                 new GUIStyle {fontSize = 18, fontStyle = FontStyle.Bold});
+            EditorGUILayout.LabelField("To use variables in Dialogue Texts, simply insert {{VARIABLE_NAME}} into the text");
+            
             if (EditorGUILayout.BeginFadeGroup(_newValueFade ? 1 : 0))
             {
                 foreach (var graphVariable in graph.Variables.ToList())

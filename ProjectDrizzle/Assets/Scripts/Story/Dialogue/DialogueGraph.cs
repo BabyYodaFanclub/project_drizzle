@@ -39,6 +39,14 @@ public class DialogueGraph : NodeGraph
         }
         return base.AddNode(type);
     }
+
+    public string EnrichStatementWithInsertedVariables(string statement)
+    {
+        return Variables
+            .Aggregate(statement,
+                (current, graphVariable) => 
+                    current.Replace("{{" + graphVariable.Key + "}}", graphVariable.Value));
+    }
 }
 
 [Serializable]

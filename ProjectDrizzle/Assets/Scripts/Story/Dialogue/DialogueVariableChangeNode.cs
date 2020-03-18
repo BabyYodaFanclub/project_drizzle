@@ -3,7 +3,7 @@ using XNode;
 
 namespace Story.Dialogue
 {
-    [CreateNodeMenu("VariableChange")]
+    [CreateNodeMenu("Variable Change")]
     [NodeTint(150, 150, 150), NodeWidth(300)]
     public class DialogueVariableChangeNode : DialogueBaseNode
     {
