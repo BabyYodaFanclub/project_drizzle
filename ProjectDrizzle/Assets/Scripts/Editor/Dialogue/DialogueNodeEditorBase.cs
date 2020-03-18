@@ -8,13 +8,14 @@ namespace Editor.Dialogue
     {
         static DialogueNodeEditorBase()
         {
-            NodeEditor.onUpdateNode += OnUpdateNode;
+            onUpdateNode += OnUpdateNode;
         }
 
         private static void OnUpdateNode(Node node)
         {
             if (node is DialogueBaseNode dialogueNode)
             {
+                dialogueNode.Validate();
                 dialogueNode.OnUpdateNode();
             }
         }

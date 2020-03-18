@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
 using XNode;
 
 [CreateAssetMenu(menuName = "Story/DialogueTree", fileName = "NewDialogue")]
+[Serializable]
 public class DialogueGraph : NodeGraph
 {
-    [SerializeField] public SerializableDictionaryBase<string, object> Variables { get; }
+    [SerializeField]
+    public DialogueVariablesDictionary Variables;
     
     public DialogueGraph()
     {
         if (Variables == null)
         {
-            Variables = new SerializableDictionaryBase<string, object>();
+            Variables = new DialogueVariablesDictionary();
         }
     }
 }
+
+[Serializable]
+public class DialogueVariablesDictionary : SerializableDictionaryBase<string, string> { }

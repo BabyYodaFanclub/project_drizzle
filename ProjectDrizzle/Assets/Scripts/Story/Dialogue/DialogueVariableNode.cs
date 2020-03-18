@@ -1,10 +1,9 @@
-using UnityEngine;
 using XNode;
 
 namespace Story.Dialogue
 {
     [CreateNodeMenu("Variable")]
-    [NodeTint(150, 150, 150), NodeWidth(200)]
+    [NodeTint(150, 150, 150), NodeWidth(300)]
     public class DialogueVariableNode : DialogueBaseNode
     {
         [Output(ShowBackingValue.Always, ConnectionType.Override, TypeConstraint.InheritedInverse)] public float Value;
@@ -28,9 +27,14 @@ namespace Story.Dialogue
         
         }
 
-        public override DialogueBaseNode GetNextNode()
+        public override DialogueBaseNode StepForwardInGraph()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void Validate()
+        {
+            
         }
 
         private void Reset()

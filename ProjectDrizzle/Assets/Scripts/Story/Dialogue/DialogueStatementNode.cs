@@ -16,9 +16,9 @@ public class DialogueStatementNode : DialogueBaseNode
 	
     // Return the correct value of an output port when requested
     public override object GetValue(NodePort port) {
-        if (port.fieldName == nameof(SuccessorNode))
+        if (port.fieldName == nameof(SuccessorNode) && port.Connection != null)
         {
-            return port.Connection.node;
+            return port.Connection?.node;
         }
         return null; // Replace this
     }
@@ -28,9 +28,15 @@ public class DialogueStatementNode : DialogueBaseNode
         
     }
 
-    public override DialogueBaseNode GetNextNode()
+    public override DialogueBaseNode StepForwardInGraph()
     {
-        return (DialogueBaseNode) GetPort(nameof(SuccessorNode)).Connection.node;
+        return (DialogueBaseNode) GetPort(nameof(SuccessorNode)).Connection?.node;
+    }
+
+    public override void Validate()
+    {
+        if (GetPort(nameof(SuccessorNode)).Connection == null)
+            Debug.LogError("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
     }
 
     private void Reset()

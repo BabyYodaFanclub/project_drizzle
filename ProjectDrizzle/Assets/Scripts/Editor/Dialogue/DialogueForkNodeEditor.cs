@@ -1,7 +1,6 @@
+using System.Globalization;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using XNode;
 using XNodeEditor;
 
 namespace Editor.Dialogue
@@ -21,14 +20,21 @@ namespace Editor.Dialogue
                 _selected = Selection.activeObject == target;
             }
 
-            if (_numberForkNode == null) _numberForkNode = (DialogueNumberForkNode) target;
+            if (_numberForkNode == null)
+                _numberForkNode = (DialogueNumberForkNode) target;
             
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.InputNode)));
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.Variable)));
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.ComparisonValue)));
+
+            var validFloat = float.TryParse(EditorGUILayout.TextField("Compare To", _numberForkNode.ComparisonValue.ToString(CultureInfo.CurrentCulture)), out var parsed);
+            if (validFloat)
+                _numberForkNode.ComparisonValue = parsed;
+            
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.Bigger)));
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.Equal)));
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_numberForkNode.Smaller)));
+            
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

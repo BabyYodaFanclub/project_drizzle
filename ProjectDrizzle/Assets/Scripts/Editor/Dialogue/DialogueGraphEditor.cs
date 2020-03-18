@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using XNode;
 using XNodeEditor;
 
 namespace Editor.Dialogue
@@ -47,11 +46,15 @@ namespace Editor.Dialogue
                     graph.Variables[editedKey] = editedValue;
                     if (editedKey != graphVariable.Key)
                         graph.Variables.Remove(graphVariable.Key);
+                    
+                    EditorUtility.SetDirty(graph);
                 }
 
                 if (GUILayout.Button("Remove"))
                 {
                     graph.Variables.Remove(graphVariable.Key);
+                    
+                    EditorUtility.SetDirty(graph);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -59,16 +62,11 @@ namespace Editor.Dialogue
             if (graph.Variables.Count > 0)
                 EditorGUILayout.Separator();
 
-            EditorGUI.BeginChangeCheck();
             EditorGUILayout.LabelField("New Variable:", new GUIStyle {fontSize = 14, fontStyle = FontStyle.Bold});
             EditorGUILayout.BeginHorizontal();
             _newKey = EditorGUILayout.TextField("Key", _newKey);
             _newValue = EditorGUILayout.TextField("Value", _newValue);
             EditorGUILayout.EndHorizontal();
-            if (EditorGUI.EndChangeCheck())
-            {
-                // todo
-            }
 
             if (!string.IsNullOrWhiteSpace(_newKey))
             {
@@ -80,6 +78,8 @@ namespace Editor.Dialogue
                     _newKey = "";
                     _newValue = "";
                     EditorGUI.FocusTextInControl(null);
+                    
+                    EditorUtility.SetDirty(graph);
                 }
                 EditorGUI.EndDisabledGroup();
             }

@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Story.Dialogue;
 using UnityEditor;
 using UnityEngine;
@@ -26,23 +24,18 @@ namespace Editor.Dialogue
             if (_variableNode == null) _variableNode = (DialogueVariableNode) target;
 
             serializedObject.Update();
-            
-            NodeEditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(_variableNode.Value)));
 
             var dialogueGraph = (DialogueGraph) _variableNode.graph;
+            
             var options = dialogueGraph.Variables.Keys.ToArray();
             var selectedValue =  EditorGUILayout.Popup("Variable:", options.ToList().IndexOf(_variableNode.VariableName), options);
             _variableNode.VariableName = selectedValue >= 0 ? options[selectedValue] : "";
-
-            /*if (_selected)
-            {
-            }
-            else
-            {
-                base.OnBodyGUI();
-            }*/
-
-
+            
+            if (!string.IsNullOrWhiteSpace(_variableNode.VariableName))
+                EditorGUILayout.LabelField($"Value:\t{dialogueGraph.Variables[_variableNode.VariableName]}");
+            
+            NodeEditorGUILayout.AddPortField(_variableNode.GetPort(nameof(_variableNode.Value)));
+            
             // Apply property modifications
             serializedObject.ApplyModifiedProperties();
         }
