@@ -3,6 +3,8 @@ using XNode;
 
 public abstract class DialogueBaseNode : Node
 {
+	protected DialogueGraph DialogueGraph => (DialogueGraph) graph;
+
 	// Use this for initialization
 	protected override void Init() {
 		base.Init();

@@ -31,7 +31,10 @@ namespace Story.Dialogue
         public override DialogueBaseNode StepForwardInGraph()
         {
             ((DialogueGraph) graph).Variables[VariableName] = Value;
-            return (DialogueBaseNode) GetPort(nameof(SuccessorNode)).Connection?.node;
+            
+            var next = (DialogueBaseNode) GetPort(nameof(SuccessorNode)).Connection?.node;
+            DialogueGraph.Current = next;
+            return next;
         }
 
         public override void Validate()
