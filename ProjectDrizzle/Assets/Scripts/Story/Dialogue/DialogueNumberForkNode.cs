@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using XNode;
 
-[CreateNodeMenu("NumberFork")]
+[CreateNodeMenu("Number Fork")]
 [NodeTint(150, 150, 250), NodeWidth(200)]
 public class DialogueNumberForkNode : DialogueBaseNode
 {

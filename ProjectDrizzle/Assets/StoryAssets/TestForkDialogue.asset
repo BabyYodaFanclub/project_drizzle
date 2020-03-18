@@ -24,8 +24,8 @@ MonoBehaviour:
       _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Start
-        node: {fileID: 3713907600332341685}
+      - fieldName: SuccessorNodeOne
+        node: {fileID: 1631512024363023068}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: NumberFork
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 152, y: -280}
+  position: {x: 120, y: -280}
   ports:
     keys:
     - InputNode
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: Variable
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -312, y: -152}
+  position: {x: -232, y: -152}
   ports:
     keys:
     - Value
@@ -224,6 +224,9 @@ MonoBehaviour:
   - {fileID: -640533027683336407}
   - {fileID: 1539953108192099372}
   - {fileID: 1579583849111764599}
+  - {fileID: 1823806593597058432}
+  - {fileID: 3762328719058834751}
+  - {fileID: 1631512024363023068}
   Variables:
     reorderableList:
       canAdd: 1
@@ -266,7 +269,7 @@ MonoBehaviour:
   m_Name: VariableChange
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 408, y: -56}
+  position: {x: 472, y: -56}
   ports:
     keys:
     - PredecessorNode
@@ -279,6 +282,12 @@ MonoBehaviour:
       connections:
       - fieldName: Smaller
         node: {fileID: -3593367903933328225}
+        reroutePoints: []
+      - fieldName: SuccessorNodeTwo
+        node: {fileID: 1823806593597058432}
+        reroutePoints: []
+      - fieldName: SuccessorNodeThree
+        node: {fileID: 1823806593597058432}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -327,6 +336,9 @@ MonoBehaviour:
       - fieldName: Bigger
         node: {fileID: -3593367903933328225}
         reroutePoints: []
+      - fieldName: SuccessorNodeOne
+        node: {fileID: 1823806593597058432}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 1
@@ -346,7 +358,147 @@ MonoBehaviour:
   PredecessorNode: {fileID: 0}
   SuccessorNode: {fileID: 0}
   Speaker: {fileID: 0}
-  DialogueText: 
+  DialogueText: "hahasah\xF6 rqrpoi"
+--- !u!114 &1631512024363023068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d73e7012af843988a6e73941441a057, type: 3}
+  m_Name: Selection
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -632, y: -152}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNodeOne
+    - SuccessorNodeTwo
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: 1631512024363023068}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Start
+        node: {fileID: 3713907600332341685}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNodeOne
+      _node: {fileID: 1631512024363023068}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: -6879771330395854092}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+    - _fieldName: SuccessorNodeTwo
+      _node: {fileID: 1631512024363023068}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: 3762328719058834751}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  AnswerOne: ayy
+  SuccessorNodeOne: {fileID: 0}
+  AnswerTwo: lmao
+  SuccessorNodeTwo: {fileID: 0}
+--- !u!114 &1823806593597058432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91460e8183b742f3a00e0b21c5decca6, type: 3}
+  m_Name: Selection
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 56, y: 8}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNodeOne
+    - SuccessorNodeTwo
+    - SuccessorNodeThree
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: 1823806593597058432}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SuccessorNodeOne
+        node: {fileID: 3762328719058834751}
+        reroutePoints: []
+      - fieldName: SuccessorNodeTwo
+        node: {fileID: 3762328719058834751}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNodeOne
+      _node: {fileID: 1823806593597058432}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: 1579583849111764599}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+    - _fieldName: SuccessorNodeTwo
+      _node: {fileID: 1823806593597058432}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: 1539953108192099372}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+    - _fieldName: SuccessorNodeThree
+      _node: {fileID: 1823806593597058432}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: 1539953108192099372}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  AnswerOne: f43
+  SuccessorNodeOne: {fileID: 0}
+  AnswerTwo: 234v5
+  SuccessorNodeTwo: {fileID: 0}
+  AnswerThree: 21b 3g2
+  SuccessorNodeThree: {fileID: 0}
 --- !u!114 &3713907600332341685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,13 +523,74 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: PredecessorNode
-        node: {fileID: -6879771330395854092}
+        node: {fileID: 1631512024363023068}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 3
       _dynamic: 0
   Start: {fileID: 0}
+--- !u!114 &3762328719058834751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d73e7012af843988a6e73941441a057, type: 3}
+  m_Name: Selection
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -312, y: 40}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNodeOne
+    - SuccessorNodeTwo
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: 3762328719058834751}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SuccessorNodeTwo
+        node: {fileID: 1631512024363023068}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNodeOne
+      _node: {fileID: 3762328719058834751}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: 1823806593597058432}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+    - _fieldName: SuccessorNodeTwo
+      _node: {fileID: 3762328719058834751}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: 1823806593597058432}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  AnswerOne: dfsa
+  SuccessorNodeOne: {fileID: 0}
+  AnswerTwo: asdf
+  SuccessorNodeTwo: {fileID: 0}
 --- !u!114 &7503703104932457892
 MonoBehaviour:
   m_ObjectHideFlags: 0
