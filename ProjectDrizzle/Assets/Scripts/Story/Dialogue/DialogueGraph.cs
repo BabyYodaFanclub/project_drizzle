@@ -35,7 +35,7 @@ public class DialogueGraph : NodeGraph
     {
         if (type == typeof(DialogueStartNode) && nodes.Count(n => n is DialogueStartNode) >= 1)
         {
-            Debug.LogError("There can only be one Start Node in the graph!");
+            Debug.LogWarning("There can only be one Start Node in the graph!");
         }
         return base.AddNode(type);
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 using XNodeEditor;
 
@@ -9,6 +10,7 @@ namespace Editor.Dialogue
     [CustomNodeGraphEditor(typeof(DialogueGraph))]
     public class DialogueGraphEditor : NodeGraphEditor
     {
+        private bool _newValueFade;
         private string _newKey;
         private string _newValue;
 
@@ -22,6 +24,13 @@ namespace Editor.Dialogue
             return null;
         }
 
+        public override void OnCreate()
+        {
+            base.OnCreate();
+            CreateNode(typeof(DialogueStartNode), Vector2.left * 400);
+            CreateNode(typeof(DialogueEndNode), Vector2.right * 400);
+        }
+
         public override void OnGUI()
         {
             var graph = (DialogueGraph) target;
@@ -33,56 +42,64 @@ namespace Editor.Dialogue
                 fixedWidth = 400
             });
 
-            EditorGUILayout.LabelField("Graph Variables", new GUIStyle {fontSize = 18, fontStyle = FontStyle.Bold});
-
-            foreach (var graphVariable in graph.Variables.ToList())
+            _newValueFade = EditorGUILayout.ToggleLeft("Graph Variables", _newValueFade,
+                new GUIStyle {fontSize = 18, fontStyle = FontStyle.Bold});
+            if (EditorGUILayout.BeginFadeGroup(_newValueFade ? 1 : 0))
             {
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.BeginHorizontal();
-                var editedKey = EditorGUILayout.TextField("Key", graphVariable.Key);
-                var editedValue = EditorGUILayout.TextField("Value", graphVariable.Value?.ToString());
-                if (EditorGUI.EndChangeCheck() && !string.IsNullOrWhiteSpace(editedKey))
+                foreach (var graphVariable in graph.Variables.ToList())
                 {
-                    graph.Variables[editedKey] = editedValue;
-                    if (editedKey != graphVariable.Key)
+                    EditorGUI.BeginChangeCheck();
+                    EditorGUILayout.BeginHorizontal();
+                    var editedKey = EditorGUILayout.TextField("Key", graphVariable.Key);
+                    var editedValue = EditorGUILayout.TextField("Value", graphVariable.Value?.ToString());
+                    if (EditorGUI.EndChangeCheck() && !string.IsNullOrWhiteSpace(editedKey))
+                    {
+                        graph.Variables[editedKey] = editedValue;
+                        if (editedKey != graphVariable.Key)
+                            graph.Variables.Remove(graphVariable.Key);
+
+                        EditorUtility.SetDirty(graph);
+                    }
+
+                    if (GUILayout.Button("Remove"))
+                    {
                         graph.Variables.Remove(graphVariable.Key);
-                    
-                    EditorUtility.SetDirty(graph);
+
+                        EditorUtility.SetDirty(graph);
+                    }
+
+                    EditorGUILayout.EndHorizontal();
                 }
 
-                if (GUILayout.Button("Remove"))
-                {
-                    graph.Variables.Remove(graphVariable.Key);
-                    
-                    EditorUtility.SetDirty(graph);
-                }
+                if (graph.Variables.Count > 0)
+                    EditorGUILayout.Separator();
+
+                EditorGUILayout.LabelField("New Variable", new GUIStyle {fontSize = 14, fontStyle = FontStyle.Bold});
+                EditorGUILayout.BeginHorizontal();
+                _newKey = EditorGUILayout.TextField("Key", _newKey);
+                _newValue = EditorGUILayout.TextField("Value", _newValue);
                 EditorGUILayout.EndHorizontal();
-            }
 
-            if (graph.Variables.Count > 0)
-                EditorGUILayout.Separator();
-
-            EditorGUILayout.LabelField("New Variable:", new GUIStyle {fontSize = 14, fontStyle = FontStyle.Bold});
-            EditorGUILayout.BeginHorizontal();
-            _newKey = EditorGUILayout.TextField("Key", _newKey);
-            _newValue = EditorGUILayout.TextField("Value", _newValue);
-            EditorGUILayout.EndHorizontal();
-
-            if (!string.IsNullOrWhiteSpace(_newKey))
-            {
-                if (graph.Variables.Keys.Contains(_newKey))
-                    EditorGUI.BeginDisabledGroup(true);
-                if (GUILayout.Button("Add"))
+                if (!string.IsNullOrWhiteSpace(_newKey))
                 {
-                    graph.Variables.Add(_newKey, _newValue);
-                    _newKey = "";
-                    _newValue = "";
-                    EditorGUI.FocusTextInControl(null);
-                    
-                    EditorUtility.SetDirty(graph);
+                    if (graph.Variables.Keys.Contains(_newKey))
+                        EditorGUI.BeginDisabledGroup(true);
+                    if (GUILayout.Button("Add"))
+                    {
+                        graph.Variables.Add(_newKey, _newValue);
+                        _newKey = "";
+                        _newValue = "";
+                        EditorGUI.FocusTextInControl(null);
+
+                        EditorUtility.SetDirty(graph);
+                    }
+
+                    EditorGUI.EndDisabledGroup();
                 }
-                EditorGUI.EndDisabledGroup();
             }
+
+            EditorGUILayout.EndFadeGroup();
+
 
             EditorGUILayout.EndVertical();
         }

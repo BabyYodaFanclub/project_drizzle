@@ -31,7 +31,7 @@ public class DialogueStartNode : DialogueBaseNode
     public override void Validate()
     {
         if (GetPort(nameof(Start)).Connection == null)
-            Debug.LogError("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
+            Debug.LogWarning("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
     }
 
     private void Reset()

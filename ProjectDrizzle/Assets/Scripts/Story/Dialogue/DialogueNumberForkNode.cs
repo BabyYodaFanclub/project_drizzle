@@ -70,15 +70,15 @@ public class DialogueNumberForkNode : DialogueBaseNode
     {
         if (!float.TryParse(GetPort(nameof(Variable)).GetInputValue().ToString(), out var _))
         {
-            Debug.LogError("The connected Variable is not a valid number");
+            Debug.LogWarning("The connected Variable is not a valid number");
         }
 
         if (GetPort(nameof(Smaller)).Connection == null)
-            Debug.LogError("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
+            Debug.LogWarning("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
         if (GetPort(nameof(Equal)).Connection == null)
-            Debug.LogError("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
+            Debug.LogWarning("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
         if (GetPort(nameof(Bigger)).Connection == null)
-            Debug.LogError("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
+            Debug.LogWarning("The Dialogue Tree has an illegal State, not all ports connect to a valid node");
     }
 
     public override void OnUpdateNode()
