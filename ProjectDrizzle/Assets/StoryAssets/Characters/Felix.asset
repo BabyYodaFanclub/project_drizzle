@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f07a32888bf43b28195b4cde0aa3a37, type: 3}
-  m_Name: Jens
+  m_Name: Felix
   m_EditorClassIdentifier: 
-  Name: Jens
+  Name: Felix
+  Thumbnail: {fileID: 2800000, guid: a507eb8375064f947a79c4ea9456d945, type: 3}

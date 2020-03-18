@@ -6,5 +6,6 @@ namespace Story
     public class Character : ScriptableObject
     {
         public string Name;
+        public Texture Thumbnail;
     }
 }

@@ -1,0 +1,345 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2736145372696136081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b204500bde46358c56629df218306a, type: 3}
+  m_Name: Statement
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 360, y: -376}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNode
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: -2736145372696136081}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SuccessorNode
+        node: {fileID: -2620024155405368907}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNode
+      _node: {fileID: -2736145372696136081}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: 5725126535921949249}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  SuccessorNode: {fileID: 0}
+  Speaker: {fileID: 11400000, guid: 415fcee438410f848b9845c752302c5c, type: 2}
+  DialogueText: No
+--- !u!114 &-2620024155405368907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b204500bde46358c56629df218306a, type: 3}
+  m_Name: Statement
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -8, y: -376}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNode
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: -2620024155405368907}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SuccessorNode
+        node: {fileID: -2067159580014049211}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNode
+      _node: {fileID: -2620024155405368907}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: -2736145372696136081}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  SuccessorNode: {fileID: 0}
+  Speaker: {fileID: 0}
+  DialogueText: Hi
+--- !u!114 &-2067159580014049211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b204500bde46358c56629df218306a, type: 3}
+  m_Name: Statement
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -360, y: -376}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNode
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: -2067159580014049211}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Start
+        node: {fileID: 1893134566850056598}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNode
+      _node: {fileID: -2067159580014049211}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: -2620024155405368907}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  SuccessorNode: {fileID: 0}
+  Speaker: {fileID: 11400000, guid: 415fcee438410f848b9845c752302c5c, type: 2}
+  DialogueText: Ayy
+--- !u!114 &-1928202307075281031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b204500bde46358c56629df218306a, type: 3}
+  m_Name: Statement
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 280, y: -40}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNode
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: -1928202307075281031}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SuccessorNode
+        node: {fileID: 5725126535921949249}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNode
+      _node: {fileID: -1928202307075281031}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: End
+        node: {fileID: 5866464158318345542}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  SuccessorNode: {fileID: 0}
+  Speaker: {fileID: 11400000, guid: a1388ec8e1e224049a569491697bfe02, type: 2}
+  DialogueText: Henlo
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce1425cfe349c749a5de6c11562ba6b, type: 3}
+  m_Name: TestLinearTree
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1893134566850056598}
+  - {fileID: -2067159580014049211}
+  - {fileID: -2620024155405368907}
+  - {fileID: 5866464158318345542}
+  - {fileID: -2736145372696136081}
+  - {fileID: 5725126535921949249}
+  - {fileID: -1928202307075281031}
+  Variables:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: []
+    _keys: []
+    _values: []
+--- !u!114 &1893134566850056598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a24fc35f53a443fa8a5b7800ddd5269f, type: 3}
+  m_Name: Start
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -488, y: -376}
+  ports:
+    keys:
+    - Start
+    values:
+    - _fieldName: Start
+      _node: {fileID: 1893134566850056598}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: -2067159580014049211}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  Start: {fileID: 0}
+--- !u!114 &5725126535921949249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b204500bde46358c56629df218306a, type: 3}
+  m_Name: Statement
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -216, y: -24}
+  ports:
+    keys:
+    - PredecessorNode
+    - SuccessorNode
+    values:
+    - _fieldName: PredecessorNode
+      _node: {fileID: 5725126535921949249}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SuccessorNode
+        node: {fileID: -2736145372696136081}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+    - _fieldName: SuccessorNode
+      _node: {fileID: 5725126535921949249}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: PredecessorNode
+        node: {fileID: -1928202307075281031}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 3
+      _dynamic: 0
+  PredecessorNode: {fileID: 0}
+  SuccessorNode: {fileID: 0}
+  Speaker: {fileID: 11400000, guid: 213fca0acce44884bb930679fe48aa31, type: 2}
+  DialogueText: Wazzup
+--- !u!114 &5866464158318345542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e13b67bdb942d8877cfe1b444d67df, type: 3}
+  m_Name: End
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 680, y: 24}
+  ports:
+    keys:
+    - End
+    values:
+    - _fieldName: End
+      _node: {fileID: 5866464158318345542}
+      _typeQualifiedName: DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: SuccessorNode
+        node: {fileID: -1928202307075281031}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 1
+      _dynamic: 0
+  End: {fileID: 0}
