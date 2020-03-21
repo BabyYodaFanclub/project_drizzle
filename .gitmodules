@@ -1,0 +1,3 @@
+[submodule "ProjectDrizzle/Assets/Submodules/TMP-Text-Juicer"]
+	path = ProjectDrizzle/Assets/Submodules/TMP-Text-Juicer
+	url = https://github.com/badawe/TMP-Text-Juicer.git
