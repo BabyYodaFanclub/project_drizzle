@@ -6,16 +6,19 @@ using UnityEngine.Assertions;
 
 public class TextTokenizer
 {
+    public static TextTokenizer Instance { get; } = new TextTokenizer();
+    
     private readonly List<TokenDefinition> _tokenDefinitions;
 
-    public TextTokenizer()
+    private TextTokenizer()
     {
         _tokenDefinitions = new List<TokenDefinition>
         {
             new TokenDefinition(TokenType.Fat, "\\*", 2, isOpenCloseStyle: true),
             new TokenDefinition(TokenType.Italic, "\\*\\*", 1, isOpenCloseStyle: true),
             new TokenDefinition(TokenType.Wobble, "`", 1, isOpenCloseStyle: true),
-            new TokenDefinition(TokenType.Text, ".", 100, isOpenCloseStyle: true),
+            new TokenDefinition(TokenType.HtmlTag, "<.+?>", 1),
+            new TokenDefinition(TokenType.Text, ".", 100),
         };
     }
 
@@ -43,12 +46,23 @@ public class TextTokenizer
         // merging succeeding text token into one
         var withMergedTokens = new List<Token>();
         Token last = null;
+        var currentLetterIndex = -1;
+        var currentLetterIndexNoWhiteSpaces = -1;
         foreach (var token in collectedTokens)
         {
-            if (token.TokenType == TokenType.Text 
-                && last != null 
-                && last.TokenType == TokenType.Text)
+            if (token.TokenType == TokenType.Text)
+            {
+                currentLetterIndex++;
+                currentLetterIndexNoWhiteSpaces += char.IsWhiteSpace(Convert.ToChar(token.Value)) ? 0 : 1;
+            }
+            
+            token.LetterIndex = currentLetterIndex + (token.OpenClosed == OpenClose.Open ? 1 : 0);
+            token.LetterIndexNoWhiteSpaces = currentLetterIndexNoWhiteSpaces + (token.OpenClosed == OpenClose.Open ? 1 : 0);
+            
+            if (token.TokenType == TokenType.Text && last != null && last.TokenType == TokenType.Text)
+            {
                 last.Value += token.Value;
+            }
             else
             {
                 withMergedTokens.Add(token);
@@ -85,9 +99,11 @@ public class Token
         OpenClosed = openClosed;
     }
 
-    public TokenType TokenType { get; }
+    public TokenType TokenType { get; set; }
     public string Value { get; set; }
     public OpenClose OpenClosed { get; }
+    public int LetterIndex { get; set; }
+    public int LetterIndexNoWhiteSpaces { get; set; }
 
     public Token Clone()
     {
@@ -101,6 +117,7 @@ public enum TokenType
     Fat,
     Italic,
     Wobble,
+    HtmlTag
 }
 
 public class TokenDefinition
@@ -109,16 +126,14 @@ public class TokenDefinition
     private readonly TokenType _returnsToken;
     private readonly int _precedence;
     private readonly bool _isOpenCloseStyle;
-    private readonly bool _doAggregate;
 
     public TokenDefinition(TokenType returnsToken, string regexPattern, int precedence,
-        bool isOpenCloseStyle = false, bool doAggregate = false)
+        bool isOpenCloseStyle = false)
     {
         _regex = new Regex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         _returnsToken = returnsToken;
         _precedence = precedence;
         _isOpenCloseStyle = isOpenCloseStyle;
-        _doAggregate = doAggregate;
     }
 
     public IEnumerable<TokenMatch> FindMatches(string inputString)

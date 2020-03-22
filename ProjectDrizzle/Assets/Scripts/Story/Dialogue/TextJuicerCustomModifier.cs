@@ -40,13 +40,7 @@ public class TextJuicerCustomModifier : TextJuicerVertexModifier
         new Keyframe(0.5f, 0), new Keyframe(0.75f, 2.0f),
         new Keyframe(1, 0f));
 
-    [SerializeField]
-    private List<TextAnimationConfig> _configuredAnimations = new List<TextAnimationConfig>();
-
-    public void AddAnimation(TextAnimationConfig animationConfig)
-    {
-        _configuredAnimations.Add(animationConfig);
-    }
+    [SerializeField] public List<TextAnimationConfig> ConfiguredEffects = new List<TextAnimationConfig>();
     
     public override void ModifyCharacter(CharacterData characterData, TMP_Text textComponent, TMP_TextInfo textInfo,
         float progress,
@@ -70,7 +64,7 @@ public class TextJuicerCustomModifier : TextJuicerVertexModifier
             destinationVertices[vertexIndex + 2] = sourceVertices[vertexIndex + 2] - offset;
             destinationVertices[vertexIndex + 3] = sourceVertices[vertexIndex + 3] - offset;
 
-            var configs = _configuredAnimations.Where(conf =>
+            var configs = ConfiguredEffects.Where(conf =>
                 conf.MinCharIndex <= characterData.Index && conf.MaxCharIndex >= characterData.Index);
 
             var finalPosition = Vector3.zero;
@@ -122,11 +116,11 @@ public class TextAnimationConfig
     public int MaxCharIndex = int.MaxValue;
     public bool DoWobble;
     public Vector3 WobbleIntensity = Vector3.up;
+    public bool ChangeColor;
     public Color Color;
     
     [NonSerialized]
     public float[] _randomCharOffsets;
-    public bool ChangeColor;
 
     public float[] RandomCharOffsets
     {
